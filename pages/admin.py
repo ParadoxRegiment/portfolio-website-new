@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import SocialLink
+
+@admin.register(SocialLink)
+class SocialLinkAdmin(admin.ModelAdmin):
+    list_display = ["platform", "label", "url", "order"]
+    list_editable = ["order"]

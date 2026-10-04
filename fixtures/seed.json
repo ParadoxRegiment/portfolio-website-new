@@ -1,0 +1,154 @@
+[
+{
+  "model": "projects.category",
+  "pk": 1,
+  "fields": {
+    "name": "Web Apps",
+    "slug": "web-apps",
+    "description": "Various web applications",
+    "order": 0
+  }
+},
+{
+  "model": "projects.category",
+  "pk": 2,
+  "fields": {
+    "name": "Data Tools",
+    "slug": "data-tools",
+    "description": "Software tools and scripts for data analysis, manipulation, etc.",
+    "order": 0
+  }
+},
+{
+  "model": "projects.category",
+  "pk": 3,
+  "fields": {
+    "name": "Models & Simulations",
+    "slug": "models-simulations",
+    "description": "Scripts built for physical models and simulations",
+    "order": 0
+  }
+},
+{
+  "model": "projects.tag",
+  "pk": 1,
+  "fields": {
+    "name": "Python",
+    "slug": "python"
+  }
+},
+{
+  "model": "projects.tag",
+  "pk": 2,
+  "fields": {
+    "name": "Django",
+    "slug": "django"
+  }
+},
+{
+  "model": "projects.tag",
+  "pk": 3,
+  "fields": {
+    "name": "pandas",
+    "slug": "pandas"
+  }
+},
+{
+  "model": "projects.tag",
+  "pk": 4,
+  "fields": {
+    "name": "MySQL",
+    "slug": "mysql"
+  }
+},
+{
+  "model": "projects.tag",
+  "pk": 5,
+  "fields": {
+    "name": "PostgreSQL",
+    "slug": "postgresql"
+  }
+},
+{
+  "model": "projects.tag",
+  "pk": 6,
+  "fields": {
+    "name": "ETL",
+    "slug": "etl"
+  }
+},
+{
+  "model": "projects.tag",
+  "pk": 7,
+  "fields": {
+    "name": "REST APIs",
+    "slug": "rest-apis"
+  }
+},
+{
+  "model": "projects.tag",
+  "pk": 8,
+  "fields": {
+    "name": "NumPy",
+    "slug": "numpy"
+  }
+},
+{
+  "model": "projects.tag",
+  "pk": 9,
+  "fields": {
+    "name": "Physics",
+    "slug": "physics"
+  }
+},
+{
+  "model": "projects.project",
+  "pk": 1,
+  "fields": {
+    "title": "IDMTraffic",
+    "slug": "idmtraffic",
+    "summary": "IDM traffic model script",
+    "description": "[Placeholder description]",
+    "category": 3,
+    "thumbnail": "",
+    "repo_url": "",
+    "live_url": "",
+    "featured": true,
+    "is_published": true,
+    "order": 0,
+    "created": "2026-10-04T01:10:37.679Z",
+    "updated": "2026-10-04T01:10:37.679Z",
+    "tags": [
+      8,
+      9,
+      1
+    ]
+  }
+},
+{
+  "model": "projects.project",
+  "pk": 2,
+  "fields": {
+    "title": "LIGO Heatmap",
+    "slug": "ligo-heatmap",
+    "summary": "Heatmapping script for LIGO",
+    "description": "When I was working with LIGO, through Ansel Neunzert as my mentor, during my senior year of university, the problem I was presented with was that the researchers would consistently have high pockets of noise in their auxiliary sensors. A previous undergraduate had worked on the problem and created a sample script that could possibly highlight where the noise was coming from, but had since graduated and stopped working on the project. I created my script from scratch, with help from Ansel, specifically to create a heatmap of every sensor's data within certain parameters, which could then be used to pinpoint potential problem sources. Over the course of the year I ended up creating a simple but rather straightforward script that pulls the sensor data from either a single day or a range of dates, checks if the data exists, then parses, cleans, and filters the data down to within a certain coherence range, and finally puts all of that into a heatmap with the channel names and frequency combs.",
+    "category": 2,
+    "thumbnail": "",
+    "repo_url": "",
+    "live_url": "",
+    "featured": true,
+    "is_published": true,
+    "order": 0,
+    "created": "2026-10-04T01:26:57.882Z",
+    "updated": "2026-10-04T01:26:57.882Z",
+    "tags": [
+      6,
+      8,
+      9,
+      1,
+      3
+    ]
+  }
+}
+]
