@@ -4,11 +4,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        // Apply a saved theme before the page paints, so there's no flash of the wrong one.
+        try {
+        const theme = localStorage.getItem("theme");
+        if (theme) document.documentElement.dataset.theme = theme;
+        } catch {}
+    </script>
     <meta name="color-scheme" content="light dark">
     <title>{% block title %}Home{% endblock %} · Alex</title>
 
     {% tailwind_css %}
     {% htmx_script %}
+    <script type="module" src="{% static 'js/theme.js' %}"></script>
 </head>
 <body class="flex min-h-screen flex-col bg-base-100 text-base-content">
     {% include "partials/_nav.html" %}
