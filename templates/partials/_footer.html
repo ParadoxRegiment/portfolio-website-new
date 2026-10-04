@@ -1,5 +1,12 @@
 <footer class="footer footer-horizontal footer-center mt-16 border-t border-base-300 bg-base-200 p-8 text-base-content">
-    <aside>
-        <p class="text-sm text-base-content/70">© {% now "Y" %} Alex · Built with Django, htmx &amp; daisyUI</p>
-    </aside>
+  {% if social_links %}
+    <nav class="flex flex-wrap justify-center gap-6">
+      {% for link in social_links %}
+        <a href="{{ link.url }}" class="link link-hover"{% if link.is_external %} target="_blank" rel="me noopener"{% endif %}>{{ link.platform }}</a>
+      {% endfor %}
+    </nav>
+  {% endif %}
+  <aside>
+    <p class="text-sm text-base-content/70">© {% now "Y" %} Alex · Built with Django, htmx &amp; daisyUI</p>
+  </aside>
 </footer>

@@ -1,7 +1,24 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Contact{% endblock %}
 
 {% block content %}
-  <h1 class="text-4x1 font-bold tracking-tight">Home</h1>
+  <header class="mb-8">
+    <h1 class="text-4xl font-bold tracking-tight">Contact</h1>
+    <p class="mt-2 text-base-content/70">The best places to reach me or see what I'm working on.</p>
+  </header>
+
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {% for link in social_links %}
+      <a href="{{ link.url }}" class="card card-border bg-base-100 transition hover:border-primary hover:shadow-md"
+         {% if link.is_external %}target="_blank" rel="me noopener"{% endif %}>
+        <div class="card-body">
+          <h2 class="card-title">{{ link.platform }}</h2>
+          <p class="text-base-content/70">{{ link.label }}</p>
+        </div>
+      </a>
+    {% empty %}
+      <p>Links coming soon.</p>
+    {% endfor %}
+  </div>
 {% endblock %}

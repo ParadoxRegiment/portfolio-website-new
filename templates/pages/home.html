@@ -3,5 +3,48 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-  <h1 class="text-4x1 font-bold tracking-tight">Home</h1>
+  <section class="py-10 md:py-16">
+    <p class="font-semibold text-primary">Hi, I'm Alex.</p>
+    <h1 class="mt-2 max-w-4xl text-4xl font-extrabold tracking-tight md:text-6xl">
+      Python developer building
+      <span class="bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">data pipelines, simulations, and web apps.</span>
+    </h1>
+    <p class="mt-6 max-w-2xl text-lg text-base-content/70">
+      Physics B.S. turned software developer. I build tools that pull real-world data,
+      model physical systems, and turn both into something people can use.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="{% url 'projects:list' %}" class="btn btn-primary">View projects</a>
+      <a href="{% url 'pages:contact' %}" class="btn btn-outline">Get in touch</a>
+    </div>
+  </section>
+
+  {% if featured %}
+    <section class="mt-12">
+      <h2 class="mb-6 text-2xl font-bold">Featured projects</h2>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {% for project in featured %}
+          {% include "projects/_project_card.html" %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {% if categories %}
+    <section class="mt-16">
+      <h2 class="mb-6 text-2xl font-bold">Browse by type</h2>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {% for category in categories %}
+          <a href="{% url 'projects:list' %}?category={{ category.slug }}"
+             class="card card-border bg-base-100 transition hover:border-primary hover:shadow-md">
+            <div class="card-body">
+              <h3 class="card-title text-lg">{{ category.name }}</h3>
+              {% if category.description %}<p class="text-sm text-base-content/70">{{ category.description }}</p>{% endif %}
+              <span class="badge badge-ghost badge-sm">{{ category.num_projects }} project{{ category.num_projects|pluralize }}</span>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
 {% endblock %}
