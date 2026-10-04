@@ -1,0 +1,23 @@
+{% load static django_htmx %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>{% block title %}Home{% endblock %} · Alex</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.violet.min.css">
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+
+    {% htmx_script %}
+</head>
+<body>
+    {% include "partials/_nav.html" %}
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include "partials/_footer.html" %}
+</body>
+</html>

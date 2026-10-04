@@ -1,0 +1,11 @@
+{% with current=request.resolver_match %}
+<header class="container">
+    <nav>
+        <ul>
+            <li><a href="{% url 'pages:home' %}" {% if current.view_name == 'pages:home' %}aria-current="page"{% endif %}>Home</a></li>
+            <li><a href="{% url 'projects:list' %}" {% if current.namespace == 'projects' %}aria-current="page"{% endif %}>Projects</a></li>
+            <li><a href="{% url 'pages:contact' %}" {% if current.view_name == 'pages:contact' %}aria-current="page"{% endif %}>Contact</a></li>
+        </ul>
+    </nav>
+</header>
+{% endwith %}
