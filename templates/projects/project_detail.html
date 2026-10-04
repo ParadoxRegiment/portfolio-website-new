@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }}{% endblock %}
+
+{% block content %}
+    <article class="mx-auto max-w-3xl">
+        <a href="{% url 'projects:list' %}" class="link link-hover text-sm">← All projects</a>
+
+        <p class="mt-6 text-xs font-semibold uppercase tracking-wider text-primary">{{ project.category.name }}</p>
+        <h1 class="mt-1 text-4xl font-bold tracking-tight">{{ project.title }}</h1>
+        <p class="mt-3 text-lg text-base-content/70">{{ project.summary }}</p>
+
+        <div class="mt-4 flex flex-wrap gap-1.5">
+            {% for tag in project.tags.all %}
+            <a href="{% url 'projects:list' %}?tag={{ tag.slug }}" class="badge badge-soft badge-primary">{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+
+        {% if project.thumbnail %}
+            <img src="{{ project.thumbnail.url }}" alt="Screenshot of {{ project.title }}"
+                class="mt-8 aspect-video w-full rounded-box object-cover shadow">
+        {% endif %}
+
+        <div class="mt-8 space-y-4 leading-relaxed">
+            {{ project.description|linebreaks }}
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+            {% if project.repo_url %}<a href="{{ project.repo_url }}" class="btn btn-primary" target="_blank" rel="noopener">View code</a>{% endif %}
+            {% if project.live_url %}<a href="{{ project.live_url }}" class="btn btn-outline" target="_blank" rel="noopener">Live demo/site</a>{% endif %}
+        </div>
+    </article>
+{% endblock %}

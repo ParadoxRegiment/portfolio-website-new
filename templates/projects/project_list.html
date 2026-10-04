@@ -1,7 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Projects{% endblock %}
 
 {% block content %}
-  <h1 class="text-4x1 font-bold tracking-tight">Home</h1>
+    <header class="mb-8">
+        <h1 class="text-4xl font-bold tracking-tight">Projects</h1>
+        <p class="mt-2 text-base-content/70">Filter by type, tags, or both.</p>
+    </header>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {% for project in projects %}
+            {% include "projects/_project_card.html" %}
+        {% empty %}
+            <p>No projects yet.</p>
+        {% endfor %}
+    </div>
 {% endblock %}

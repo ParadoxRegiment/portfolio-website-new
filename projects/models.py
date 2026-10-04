@@ -54,7 +54,7 @@ class Project(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
-    objects = ProjectQuerySet.as_manager()
+    objects: ProjectQuerySet = ProjectQuerySet.as_manager() # type: ignore[assignment]
     
     class Meta:
         ordering = ["order", "-created"]
