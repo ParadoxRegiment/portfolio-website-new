@@ -1,4 +1,4 @@
-{% load static django_htmx %}
+{% load static tailwind_cli django_htmx %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,15 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
     <title>{% block title %}Home{% endblock %} · Alex</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.violet.min.css">
-    <link rel="stylesheet" href="{% static 'css/site.css' %}">
 
+    {% tailwind_css %}
     {% htmx_script %}
 </head>
-<body>
+<body class="flex min-h-screen flex-col bg-base-100 text-base-content">
     {% include "partials/_nav.html" %}
 
-    <main class="container">
+    <main class="mx-auto w-full max-w-6xl flex-1 px-4 py-10">
         {% block content %}{% endblock %}
     </main>
 

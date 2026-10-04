@@ -1,8 +1,12 @@
 ﻿asgiref==3.12.1
+click==8.5.0
 Django==6.1.1
+django-click==2.5.0
 django-environ==0.14.0
 django-filter==26.2
 django-htmx==1.29.0
+django-tailwind-cli==4.8.1
 pillow==12.3.0
+semver==3.1.0
 sqlparse==0.6.0
 tzdata==2026.5

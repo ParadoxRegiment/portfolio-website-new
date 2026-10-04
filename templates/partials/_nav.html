@@ -1,11 +1,16 @@
 {% with current=request.resolver_match %}
-<header class="container">
-    <nav>
-        <ul>
-            <li><a href="{% url 'pages:home' %}" {% if current.view_name == 'pages:home' %}aria-current="page"{% endif %}>Home</a></li>
-            <li><a href="{% url 'projects:list' %}" {% if current.namespace == 'projects' %}aria-current="page"{% endif %}>Projects</a></li>
-            <li><a href="{% url 'pages:contact' %}" {% if current.view_name == 'pages:contact' %}aria-current="page"{% endif %}>Contact</a></li>
-        </ul>
+<header class="sticky top-0 z-10 border-b border-base-300 bg-base-100/80 backdrop-blur">
+    <nav class="navbar mx-auto max-w-6xl px-4">
+        <div class="navbar-start">
+            <a href="{% url 'pages:home' %}" class="text-xl font-bold tracking-tight">Alex</a>
+        </div>
+        <div class="navbar-end">
+            <ul class="menu menu-horizontal gap-1">
+                <li><a href="{% url 'pages:home' %}" {% if current.view_name == 'pages:home' %}aria-current="page"{% endif %}>Home</a></li>
+                <li><a href="{% url 'projects:list' %}" {% if current.namespace == 'projects' %}aria-current="page"{% endif %}>Projects</a></li>
+                <li><a href="{% url 'pages:contact' %}" {% if current.view_name == 'pages:contact' %}aria-current="page"{% endif %}>Contact</a></li>
+            </ul>
+        </div>
     </nav>
 </header>
 {% endwith %}

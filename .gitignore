@@ -3,5 +3,7 @@
 db.sqlite3
 media/
 staticfiles/
+static/css/tailwind.css
 __pycache__/
 *.pyc
+.django_tailwind_cli/

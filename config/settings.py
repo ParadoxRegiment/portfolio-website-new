@@ -15,6 +15,7 @@ import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+TAILWIND_CLI_PATH = Path.home() / ".django_tailwind_cli"
 
 env = environ.Env(
     DEBUG=(bool, False),
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'django_htmx',
     'pages',
     'projects',
+    'django_tailwind_cli',
 ]
 
 MIDDLEWARE = [
@@ -75,6 +77,10 @@ TEMPLATES = [
         },
     },
 ]
+
+TAILWIND_CLI_USE_DAISY_UI = True
+TAILWIND_CLI_VERSION = "2.10.31"
+TAILWIND_CLI_SRC_CSS = "tailwind/source.css"
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
