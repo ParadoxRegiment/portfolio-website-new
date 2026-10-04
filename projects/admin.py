@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Project, Tag
+from .models import Category, Project, Tag, ScriptDemo
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -22,3 +22,7 @@ class ProjectAdmin(admin.ModelAdmin):
     search_fields = ["title", "summary", "description"]
     prepopulated_fields = {"slug": ["title"]}
     filter_horizontal = ["tags"]
+    
+class ScriptDemoInline(admin.StackedInline):
+    model = ScriptDemo
+    extra = 0

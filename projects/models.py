@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from django.db import models
 from django.urls import reverse
+from django.conf import settings
+from django.core.validators import FileExtensionValidator
+from django.templatetags.static import static
 
 class Category(models.Model):
     """Generalized project types, e.g. 'Web Apps' or 'Data Tools'. Only one per project.
@@ -64,4 +67,55 @@ class Project(models.Model):
     
     def get_absolute_url(self):
         return reverse("projects:detail", kwargs={"slug": self.slug})
+
+class ScriptDemo(models.Model):
+    """In-browser console for script projects via Pyodide
+    """
     
+    project = models.OneToOneField(
+        Project, on_delete=models.CASCADE, related_name="demo"
+    )
+    source_zip = models.FileField(
+        upload_to="demos/",
+        validators=[FileExtensionValidator(["zip"])],
+        help_text="Zip of the script's source files. All files are public",
+    )
+    entry_point = models.CharField(
+        max_length=200,
+        help_text="Script to run, relative to the zip root (e.g. 'pipeline.py'), "
+        "or a module name to run like 'python -m' (e.g. 'etl.pipeline').",
+    )
+    command = models.SlugField(
+        max_length=40, help_text="What visitors type to run it, e.g. 'donki'."
+    )
+    packages = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="Comma-separated packages to install, e.g. pandas, request, matplotlib",
+    )
+    intro = models.TextField(blank=True, help_text="Option note shown above the console.")
+    examples = models.TextField(
+        blank=True, help_text="One example command per line, show as clickable buttons."
+    )
+    
+    def __str__(self) -> str:
+        return f"Console for {self.project}"
+    
+    @property
+    def package_list(self) -> list[str]:
+        return [name.strip() for name in self.packages.split(",") if name.strip()]
+    
+    @property
+    def example_list(self) -> list[str]:
+        return [line.strip() for line in self.examples.splitlines() if line.strip()]
+    
+    def as_console_config(self) -> dict:
+        return {
+            "indexUrl": settings.PYODIDE_INDEX_URL,
+            "workerUrl": static("js/console-worker.js"),
+            "runtimeUrl": static("js/console_runtime.py"),
+            "sourceUrl": self.source_zip.url,
+            "command": self.command,
+            "entryPoint": self.entry_point,
+            "packages": self.package_list,
+        }

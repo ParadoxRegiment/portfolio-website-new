@@ -23,5 +23,10 @@ def project_list(request):
     return render(request, template, context)
     
 def project_detail(request, slug):
-    project = get_object_or_404(published_projects(), slug=slug)
-    return render(request, "projects/project_detail.html", {"project": project})
+    project = get_object_or_404(published_projects().select_related("demo"), slug=slug)
+    demo = getattr(project, "demo", None)
+    return render(
+        request,
+        "projects/project_detail.html",
+        {"project": project, "demo": demo},
+        )

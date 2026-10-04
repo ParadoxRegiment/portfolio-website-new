@@ -29,5 +29,9 @@
             {% if project.repo_url %}<a href="{{ project.repo_url }}" class="btn btn-primary" target="_blank" rel="noopener">View code</a>{% endif %}
             {% if project.live_url %}<a href="{{ project.live_url }}" class="btn btn-outline" target="_blank" rel="noopener">Live demo/site</a>{% endif %}
         </div>
+
+        {% if demo %}
+            {% include "projects/_console.html" %}
+        {% endif %}
     </article>
 {% endblock %}
