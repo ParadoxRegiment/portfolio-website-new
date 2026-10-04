@@ -8,11 +8,61 @@
         <p class="mt-2 text-base-content/70">Filter by type, tags, or both.</p>
     </header>
 
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {% for project in projects %}
-            {% include "projects/_project_card.html" %}
-        {% empty %}
-            <p>No projects yet.</p>
-        {% endfor %}
+    <div class="grid gap-8 md:grid-cols-[16rem_1fr] md:items-start">
+        <aside class="md:sticky md:top-24">
+            <form method="get" action="{% url 'projects:list' %}" id="filter-form"
+                hx-get="{% url 'projects:list' %}"
+                hx-trigger="change"
+                hx-target="#results"
+                hx-swap="outerHTML"
+                hx-push-url="true"
+                hx-indicator="#results"
+                hx-history="false">
+                <fieldset class="fieldset">
+                    <legend class="fieldset-legend">Type</legend>
+                    <div class="flex flex-wrap gap-2">
+                        {% for choice in filterset.form.category %}
+                            <input type="checkbox" class="btn btn-sm"
+                                name="{{ choice.data.name }}" value="{{ choice.data.value }}"
+                                aria-label="{{ choice.choice_label }}"{% if choice.data.selected %} checked{% endif %}>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+
+                <fieldset class="fieldset">
+                    <legend class="fieldset-legend">Tags</legend>
+                    <div class="flex flex-wrap gap-2">
+                        {% for choice in filterset.form.tag %}
+                            <input type="checkbox" class="btn btn-sm"
+                                name="{{ choice.data.name }}" value="{{ choice.data.value }}"
+                                aria-label="{{ choice.choice_label }}"{% if choice.data.selected %} checked{% endif %}>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+
+                <div class="flex gap-2">
+                    <noscript><button type="submit" class="btn btn-primary btn-sm">Apply filters</button></noscript>
+                    <a href="{% url 'projects:list' %}" class="btn btn-ghost btn-sm">Clear filters</a>
+                </div>
+            </form>
+        </aside>
+
+        <section>
+            {% partialdef results inline %}
+            <div id="results" class="transition-opacity [&.htmx-request]:opacity-50">
+                <p class="mb-4 text-sm text-base-content/70">Showing {{ projects|length }} project{{ projects|length|pluralize }}</p>
+                <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                    {% for project in projects %}
+                        {% include "projects/_project_card.html" %}
+                    {% empty %}
+                        <div class="rounded-box border border-dashed border-base-300 p-10 text-center sm:col-span-2 xl:col-span-3">
+                            <p class="mb-4">No projects match those filters.</p>
+                            <a href="{% url 'projects:list' %}" class="btn btn-sm">Clear filters</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endpartialdef results %}
+        </section>
     </div>
 {% endblock %}
