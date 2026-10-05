@@ -3,22 +3,40 @@
 {% block title %}Contact{% endblock %}
 
 {% block content %}
-  <header class="mb-8">
-    <h1 class="text-4xl font-bold tracking-tight">Contact</h1>
-    <p class="mt-2 text-base-content/70">The best places to reach me or see what I'm working on.</p>
-  </header>
+    <div class="grid gap-10 md:grid-cols-[1fr_1.4fr]">
+        <header>
+            <h1 class="text-4xl font-bold tracking-tight">Contact me</h1>
+            <p class="mt-4 text-base-content/70">
+                Have a question, an opportunity, or feedback on one of my projects? Send me a message
+                and I'll reply to the email address you give.
+            </p>
+            <p class="mt-4 text-base-content/70">
+                You can also find me through the links at the top of the page.
+            </p>
+        </header>
 
-  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-    {% for link in social_links %}
-      <a href="{{ link.url }}" class="card card-border bg-base-100 transition hover:border-primary hover:shadow-md"
-         {% if link.is_external %}target="_blank" rel="me noopener"{% endif %}>
-        <div class="card-body">
-          <h2 class="card-title">{{ link.platform }}</h2>
-          <p class="text-base-content/70">{{ link.label }}</p>
-        </div>
-      </a>
-    {% empty %}
-      <p>Links coming soon.</p>
-    {% endfor %}
-  </div>
+        <form method="post" action="{% url 'pages:contact' %}" class="card card-border bg-base-100 shadow-sm" novalidate>
+            <div class="card-body">
+                {% csrf_token %}
+                {% for field in form %}
+                    {% if field.name == "leave_empty" %}
+                        <div class="absolute -left-[9999px]" aria-hidden="true">
+                            {{ field.label_tag }} {{ field }}
+                        </div>
+                    {% else %}
+                        <fieldset class="fieldset">
+                            <label class="fieldset-legend" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <p class="text-sm text-error">{{ error }}</p>
+                            {% endfor %}
+                        </fieldset>
+                    {% endif %}
+                {% endfor %}
+                <div class="card-actions mt-2 justify-end">
+                    <button type="submit" class="btn btn-primary">Send message</button>
+                </div>
+            </div>
+        </form>
+    </div>
 {% endblock %}

@@ -4,5 +4,5 @@ from .models import SocialLink
 
 @admin.register(SocialLink)
 class SocialLinkAdmin(admin.ModelAdmin):
-    list_display = ["platform", "label", "url", "order"]
-    list_editable = ["order"]
+    list_display = ["platform", "icon", "label", "url", "order"]
+    list_editable = ["icon", "order"]

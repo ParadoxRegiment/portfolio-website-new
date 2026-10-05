@@ -173,10 +173,25 @@ if not DEBUG:
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
+CONTACT_EMAIL = env.str("CONTACT_EMAIL", default="")
+DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL", default="webmaster@localhost")
+
 if DEBUG:
     MAILERS = {
-        'default': {
-            'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+        'default': {'BACKEND': 'django.core.mail.backends.console.EmailBackend'},
+    }
+else:
+    MAILERS = {
+        "default": {
+            "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+            "OPTIONS": {
+                "host": env.str("EMAIL_HOST", default="smtp.protonmail.ch"),
+                "port": 587,
+                "username": env.str("EMAIL_HOST_USER", default=""),
+                "password": env.str("EMAIL_HOST_PASSWORD", default=""),
+                "use_tls": True,
+                "timeout": 10,
+            },
         },
     }
 

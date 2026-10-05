@@ -1,5 +1,5 @@
 <article class="card card-border bg-base-100 shadow-sm motion-safe:transition motion-safe:hover:-translate-y-1 hover:shadow-md">
-    {% if project.thumbmail %}
+    {% if project.thumbnail %}
         <figure class="aspect-video">
             <img src="{{ project.thumbnail.url }}" alt="Screenshot of {{ project.title }}"
             class="h-full w-full object-cover" loading="lazy">
@@ -9,21 +9,9 @@
     <div class="card-body">
         <span class="text-xs font-semibold uppercase tracking-wider text-primary">{{ project.category.name }}</span>
         <h3 class="card-title">
-            <a href="{{ project.get_absolute_url }}" class="link link-hover">{{ project.title }}</a>
+            <a href="{{ project.get_absolute_url }}" class="outline-none after:absolute after:inset-0">{{ project.title }}</a>
         </h3>
         <p class="grow text-base-content/80">{{ project.summary }}</p>
-
-        <div class="flex flex-wrap gap-1.5">
-            {% for tag in project.tags.all %}
-                <a href="{% url 'projects:list' %}?tag={{ tag.slug }}" class="badge badge-soft badge-primary bage-sm">{{ tag.name }}</a>
-            {% endfor %}
-        </div>
-
-        {% if project.repo_url or project.live_url %}
-            <div class="card-actions mt-2 justify-end">
-                {% if project.repo_url %}<a href="{{ project.repo_url }}" class="btn btn-ghost btn-sm" target="_blank" rel="noopener">Code</a>{% endif %}
-                {% if project.live_url %}<a href="{{ project.live_url }}" class="btn btn-primary btn-sm" target="_blank" rel="noopener">Live Demo/Site</a>{% endif %}
-            </div>
-        {% endif %}
+        <span class="mt-2 text-sm font-semibold text-primary" aria-hidden="true">View project →</span>
     </div>
 </article>

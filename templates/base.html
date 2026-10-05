@@ -21,6 +21,16 @@
 <body class="flex min-h-screen flex-col bg-base-100 text-base-content">
     {% include "partials/_nav.html" %}
 
+    {% if messages %}
+        <div class="mx-auto w-full max-w-6xl space-y-2 px-4 pt-6">
+            {% for message in messages %}
+                <div role="alert" class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-error{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <main class="mx-auto w-full max-w-6xl flex-1 px-4 py-10">
         {% block content %}{% endblock %}
     </main>

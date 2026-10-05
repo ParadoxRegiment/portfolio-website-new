@@ -1,14 +1,54 @@
+{% partialdef page-links %}
+    <li><a href="{% url 'pages:home' %}" {% if current.view_name == 'pages:home' %}class="menu-active" aria-current="page"{% endif %}>Home</a></li>
+    <li><a href="{% url 'projects:list' %}" {% if current.namespace == 'projects' %}class="menu-active" aria-current="page"{% endif %}>Projects</a></li>
+    <li><a href="{% url 'pages:contact' %}" {% if current.view_name == 'pages:contact' %}class="menu-active" aria-current="page"{% endif %}>Contact</a></li>
+{% endpartialdef %}
+
 {% with current=request.resolver_match %}
 <header class="sticky top-0 z-10 border-b border-base-300 bg-base-100/80 backdrop-blur">
-    <nav class="navbar mx-auto max-w-6xl px-4">
+    <nav class="navbar mx-auto max-w-6xl gap-1 px-4">
         <div class="flex-1">
-            <a href="{% url 'pages:home' %}" class="text-xl font-bold tracking-tight">Alex</a>
+            <a href="{% url 'pages:home' %}" class="text-xl font-bold tracking-tight">Alex R</a>
         </div>
-        <div class="flex-none">
-            <ul class="menu menu-horizontal gap-1">
-                <li><a href="{% url 'pages:home' %}" {% if current.view_name == 'pages:home' %}aria-current="page"{% endif %}>Home</a></li>
-                <li><a href="{% url 'projects:list' %}" {% if current.namespace == 'projects' %}aria-current="page"{% endif %}>Projects</a></li>
-                <li><a href="{% url 'pages:contact' %}" {% if current.view_name == 'pages:contact' %}aria-current="page"{% endif %}>Contact</a></li>
+
+        <ul class="menu menu-horizontal hidden gap-1 md:flex">
+            {% partial page-links %}
+        </ul>
+        {% if social_links %}
+            <div class="hidden items-center border-l border-base-300 pl-2 md:flex">
+                {% for link in social_links %}
+                    <a href="{{ link.url }}" class="btn btn-ghost btn-sm btn-square *:size-5"
+                        aria-label="{{ link.platform }}" title="{{ link.platform }}"
+                        {% if link.is_external %}target="_blank" rel="me noopener"{% endif %}>
+                        {% include link.icon_template %}
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <label class="swap swap-rotate btn btn-ghost btn-sm btn-square" title="Toggle dark mode">
+            <input type="checkbox" data-theme-toggle data-light="fantasy" data-dark="synthwave" aria-label="Dark mode">
+            <span class="swap-off *:size-5" aria-hidden="true">{% include "icons/sun.svg" %}</span>
+            <span class="swap-on *:size-5" aria-hidden="true">{% include "icons/moon-stars.svg"%}</span>
+        </label>
+
+        <div class="dropdown dropdown-end md:hidden">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-sm btn-square *:size-6" aria-label="Open menu">
+                {% include "icons/list.svg" %}
+            </div>
+            <ul tabindex="-1" class="dropdown-content menu z-20 mt-3 w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg">
+                {% partial page-links %}
+                {% if social_links %}
+                    <li class="menu-title mt-2">Find me on</li>
+                    {% for link in social_links %}
+                        <li>
+                            <a href="{{ link.url }}" class="*:first:size-4"
+                                {% if link.is_external %}target="_blank" rel="me noopener"{% endif %}>
+                                {%include link.icon_template %} {{ link.platform }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                {% endif %}
             </ul>
         </div>
     </nav>
