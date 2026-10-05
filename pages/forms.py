@@ -13,10 +13,6 @@ class ContactForm(forms.Form):
         max_length=5000,
         widget=forms.Textarea(attrs={"class": "textarea w-full", "rows": 6}),
     )
-    website = forms.CharField(
-        required=False,
-        widget=forms.TextInput(attrs={"tabindex": "-1", "autocomplete": "off"}),
-    )
     leave_empty = forms.CharField(
         required=False,
         label="Leave this field empty",
