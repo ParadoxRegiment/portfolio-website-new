@@ -2,7 +2,7 @@ const root = document.querySelector("[data-console]");
 if (root) setUpConsole(root);
 
 function setUpConsole(root) {
-    const config = JSON.parse(document.getElementById("console-config").textContent());
+    const config = JSON.parse(document.getElementById("console-config").textContent);
     const output = root.querySelector("[data-console-output]");
     const form = root.querySelector("[data-console-form]");
     const input = root.querySelector("[data-console-input]");
@@ -31,4 +31,79 @@ function setUpConsole(root) {
         img.addEventListener("load", () => (output.scrollTop = output.scrollHeight));
         output.append(img);
     }
+
+    function setBusy(value) {
+        busy = value;
+        input.disabled = value;
+        exampleButtons.forEach((button) => (button.disabled = value));
+        if (!value) {
+            stopButton.hidden = true;
+            input.focus();
+        }
+    }
+
+    function startWorker() {
+        worker = new Worker(config.workerUrl, { type: "module" });
+        worker.onmessage = ({ data }) => {
+            if (data.type === "stdout") print(data.text);
+            else if (data.type === "stderr") print(data.text, "text-error");
+            else if (data.type === "status") print(data.text, "opacity-60");
+            else if (data.type === "image") showImage(data.data);
+            else if (data.type === "done") setBusy(false);
+        };
+        worker.onerror = (event) => print(`Worker error: ${event.message}`, "text-error");
+        setBusy(true);
+        worker.postMessage({ type: "init", config });
+    }
+
+    startButton.addEventListener("click", () => {
+        startButton.remove();
+        form.hidden = false;
+        startWorker();
+    });
+
+    stopButton.addEventListener("click", () => {
+        worker.terminate();
+        print("^C Stopped. Restarting Python...", "text-warning");
+        startWorker();
+    });
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (busy) return;
+        const line = input.value.trim();
+        input.value = "";
+        print(`$ ${line}`, "text-success");
+        if (!line) return;
+
+        history.push(line);
+        historyIndex = history.length;
+
+        if (line === "clear") {
+            output.replaceChildren();
+            return;
+        }
+        setBusy(true);
+        stopButton.hidden = false;
+        worker.postMessage({ type: "run", line });
+    });
+
+    input.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowUp" && historyIndex > 0) {
+            historyIndex -= 1;
+            input.value = history[historyIndex];
+            event.preventDefault();
+        } else if (event.key === "ArrowDown" && historyIndex < history.length) {
+            historyIndex += 1;
+            input.value = history[historyIndex] ?? "";
+            event.preventDefault();
+        }
+    });
+
+    exampleButtons.forEach((button) =>
+    button.addEventListener("click", () => {
+        input.value = button.dataset.consoleExample;
+        form.requestSubmit();
+        }),
+    );
 }

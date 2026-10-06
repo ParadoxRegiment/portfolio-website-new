@@ -29,4 +29,4 @@ def project_detail(request, slug):
         request,
         "projects/project_detail.html",
         {"project": project, "demo": demo},
-        )
+    )

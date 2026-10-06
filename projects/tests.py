@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Category, Project, Tag
+from .models import Category, Project, Tag, ScriptDemo
 
 
 class ProjectListTests(TestCase):
@@ -73,3 +73,35 @@ class ProjectListTests(TestCase):
     def test_vary_header_set(self):
         response = self.client.get(self.url)
         self.assertIn("HX-Request", response["Vary"])
+        
+class ScriptDemoTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        category = Category.objects.create(name="Simulations", slug="simulations")
+        script = Project.objects.create(
+            title="Walk", slug="walk", summary="s", description="d",
+            category=category, is_published=True,
+        )
+        Project.objects.create(
+            title="Site", slug="site", summary="s", description="d",
+            category=category, is_published=True,
+        )
+        cls.demo = ScriptDemo.objects.create(
+            project=script,
+            source_zip="demos/walk.zip",   # a name is enough; the file isn't opened
+            entry_point="walk.py",
+            command="walk",
+            packages="numpy, matplotlib,",
+            examples="walk --help\n\nwalk -n 10\n",
+        )
+
+    def test_lists_parse_cleanly(self):
+        self.assertEqual(self.demo.package_list, ["numpy", "matplotlib"])
+        self.assertEqual(self.demo.example_list, ["walk --help", "walk -n 10"])
+
+    def test_console_only_on_projects_with_a_demo(self):
+        with_demo = self.client.get(reverse("projects:detail", kwargs={"slug": "walk"}))
+        without_demo = self.client.get(reverse("projects:detail", kwargs={"slug": "site"}))
+        self.assertContains(with_demo, "data-console")
+        self.assertContains(with_demo, '"entryPoint": "walk.py"')
+        self.assertNotContains(without_demo, "data-console")

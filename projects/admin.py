@@ -14,15 +14,15 @@ class TagAdmin(admin.ModelAdmin):
     search_fields = ["name"]
     prepopulated_fields = {"slug": ["name"]}
     
+class ScriptDemoInline(admin.StackedInline):
+    model = ScriptDemo
+    extra = 0
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
+    inlines = [ScriptDemoInline]
     list_display = ["title", "category", "featured", "is_published", "order"]
     list_editable = ["featured", "is_published", "order"]
     list_filter = ["category", "tags", "featured", "is_published"]
     search_fields = ["title", "summary", "description"]
     prepopulated_fields = {"slug": ["title"]}
     filter_horizontal = ["tags"]
-    
-class ScriptDemoInline(admin.StackedInline):
-    model = ScriptDemo
-    extra = 0
